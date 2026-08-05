@@ -87,14 +87,17 @@
   }
 
   .detail-container::before {
-    content: '☕';
+    content: '';
     position: absolute;
-    bottom: 40px;
-    right: 28px;
-    font-size: 120px;
+    bottom: 20px;
+    right: 20px;
+    width: 120px;
+    height: 120px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 20h40v50c0 5.5-4.5 10-10 10H40c-5.5 0-10-4.5-10-10V20z" fill="none" stroke="%23C62828" stroke-width="2"/><path d="M70 30c3 0 5 2 5 5v15c0 3-2 5-5 5" fill="none" stroke="%23C62828" stroke-width="2"/><path d="M35 75c0 2 2 4 4 4h20c2 0 4-2 4-4" fill="none" stroke="%23C62828" stroke-width="1.5"/></svg>');
+    background-repeat: no-repeat;
+    background-size: contain;
     opacity: 0.04;
     pointer-events: none;
-    line-height: 1;
   }
 
   .detail-container:hover {
@@ -119,6 +122,14 @@
     justify-content: center;
     font-size: 28px;
     flex-shrink: 0;
+    color: #C62828;
+  }
+
+  .order-icon svg,
+  .section-icon svg,
+  .menu-icon svg,
+  .payment-icon svg {
+    color: #C62828;
   }
 
   .order-info {
@@ -403,7 +414,13 @@ async function load() {
 
     detailEl.innerHTML = `
       <div class="order-header">
-        <div class="order-icon">📋</div>
+        <div class="order-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H7c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-4"/>
+            <path d="M14 4v7M10 9h8"/>
+            <rect x="6" y="15" width="12" height="1" fill="currentColor" opacity="0.3"/>
+          </svg>
+        </div>
         <div class="order-info">
           <div class="order-number">주문 <span class="order-number-highlight">#${data.id}</span></div>
           <div class="order-time">${dateStr} ${timeStr}</div>
@@ -413,7 +430,11 @@ async function load() {
       <div class="divider"></div>
 
       <div class="section">
-        <div class="section-icon">👤</div>
+        <div class="section-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+        </div>
         <div class="section-content">
           <div class="label">구매자</div>
           <div class="buyer-name">${data.buyer_name}</div>
@@ -421,7 +442,12 @@ async function load() {
       </div>
 
       <div class="menu-section">
-        <div class="menu-icon">☕</div>
+        <div class="menu-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 3H7c-1.1 0-2 .9-2 2v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V5c0-1.1-.9-2-2-2h-2M6 8h12v8c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2V8z"/>
+            <path d="M9 14h6M9 18h6"/>
+          </svg>
+        </div>
         <div class="menu-content">
           <div class="menu-label">주문 메뉴</div>
           <div class="menu-name">${data.product}</div>
@@ -433,7 +459,13 @@ async function load() {
       </div>
 
       <div class="payment-section">
-        <div class="payment-icon">💰</div>
+        <div class="payment-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 7v5l3 2" opacity="0.5"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+          </svg>
+        </div>
         <div class="payment-content">
           <div class="payment-label">결제 정보</div>
           <div class="price-line">${data.price_per_unit.toLocaleString('ko-KR')}원 × ${data.quantity}</div>
