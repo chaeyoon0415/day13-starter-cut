@@ -3,76 +3,202 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>주문 상세</title>
+<title>주문 영수증</title>
 <style>
-  :root {
-    --ink: #183027;
-    --muted: #64736c;
-    --paper: #f7f5ed;
-    --panel: #fffdf6;
-    --line: #d7dbcf;
-    --green: #257357;
-  }
   * { box-sizing: border-box; }
-  body { font-family: "Apple SD Gothic Neo", Pretendard, sans-serif; color: var(--ink); background: var(--paper); max-width: 480px; margin: 40px auto; padding: 0 16px; }
-  h1 { font-size: 22px; margin: 0 0 4px; }
-  p.lead { color: var(--muted); font-size: 14px; margin: 0 0 18px; }
-  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
-  .row { display: flex; justify-content: space-between; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
-  .row:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
-  .label { font-weight: 700; font-size: 14px; color: var(--muted); }
-  .value { font-size: 16px; font-weight: 600; }
-  .back { display: inline-block; margin-bottom: 16px; color: var(--green); text-decoration: none; font-size: 14px; }
+  body {
+    font-family: "Apple SD Gothic Neo", Pretendard, sans-serif;
+    background: #F8F5EC;
+    margin: 0;
+    padding: 20px 16px;
+    min-height: 100vh;
+  }
+  .container { max-width: 360px; margin: 0 auto; }
+  .back {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: #1F5C42;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
   .back:hover { text-decoration: underline; }
-  .error { color: #b23c1a; padding: 12px; background: #fbeae2; border-radius: 8px; }
-  .loading { color: var(--muted); }
+
+  .receipt {
+    background: #FFFEF9;
+    border: 1px solid #E5E1D8;
+    border-radius: 18px;
+    padding: 32px 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .receipt-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E5E1D8;
+  }
+
+  .order-number {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1B1D21;
+    margin-bottom: 8px;
+  }
+
+  .order-time {
+    font-size: 15px;
+    color: #7A7A7A;
+    font-weight: 400;
+  }
+
+  .receipt-section {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E5E1D8;
+  }
+
+  .receipt-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .section-label {
+    font-size: 14px;
+    color: #8B8B8B;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .section-value {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1B1D21;
+    line-height: 1.4;
+  }
+
+  .product-detail {
+    font-size: 15px;
+    color: #7A7A7A;
+    margin-top: 8px;
+    font-weight: 400;
+  }
+
+  .total-section {
+    text-align: center;
+    margin: 28px 0;
+    padding: 24px 0;
+    border-top: 1px solid #E5E1D8;
+    border-bottom: 1px solid #E5E1D8;
+  }
+
+  .total-label {
+    font-size: 14px;
+    color: #8B8B8B;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .total-amount {
+    font-size: 34px;
+    font-weight: 700;
+    color: #1F5C42;
+    line-height: 1.2;
+  }
+
+  .status-badge {
+    display: inline-block;
+    background: #E8F5EC;
+    color: #2E7D32;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    width: 100%;
+    margin-top: 24px;
+  }
+
+  .error {
+    color: #C62828;
+    padding: 16px;
+    background: #FFEBEE;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .loading {
+    color: #7A7A7A;
+    text-align: center;
+    font-size: 14px;
+    padding: 40px 20px;
+  }
 </style>
 </head>
 <body>
-  <a class="back" href="list.html">← 판매 현황으로</a>
-  <h1>주문 상세</h1>
-  <p class="lead" id="lead">주문 정보를 불러오는 중...</p>
-  <div class="card" id="detail"></div>
+  <div class="container">
+    <a class="back" href="list.html">← 판매 현황으로</a>
+    <div class="receipt" id="detail">
+      <div class="loading">주문 정보를 불러오는 중...</div>
+    </div>
+  </div>
 
 <script>
 async function load() {
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
+  const detailEl = document.getElementById('detail');
+
   if (!id) {
-    document.getElementById('detail').innerHTML = '<div class="error">주문 번호가 없습니다</div>';
-    document.getElementById('lead').textContent = '';
+    detailEl.innerHTML = '<div class="error">주문 번호가 없습니다</div>';
     return;
   }
 
   try {
     const res = await fetch(`/api/list?id=${id}`);
     if (!res.ok) {
-      document.getElementById('detail').innerHTML = '<div class="error">주문을 찾을 수 없습니다</div>';
-      document.getElementById('lead').textContent = '';
+      detailEl.innerHTML = '<div class="error">주문을 찾을 수 없습니다</div>';
       return;
     }
     const data = await res.json();
 
-    const date = new Date(data.purchased_at).toLocaleString('ko-KR');
-    document.getElementById('lead').textContent = `#${data.id} · ${date}`;
+    const date = new Date(data.purchased_at);
+    const dateStr = date.toLocaleDateString('ko-KR').replace(/\./g, '.').slice(0, -1);
+    const timeStr = date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-    document.getElementById('detail').innerHTML = `
-      <div class="row">
-        <div><div class="label">구매자</div><div class="value">${data.buyer_name}</div></div>
-        <div><div class="label">상품</div><div class="value">${data.product}</div></div>
+    detailEl.innerHTML = `
+      <div class="receipt-header">
+        <div class="order-number">주문 #${data.id}</div>
+        <div class="order-time">${dateStr} ${timeStr}</div>
       </div>
-      <div class="row">
-        <div><div class="label">수량</div><div class="value">${data.quantity}개</div></div>
-        <div><div class="label">단가</div><div class="value">${data.price_per_unit.toLocaleString('ko-KR')}원</div></div>
+
+      <div class="receipt-section">
+        <div class="section-label">구매자</div>
+        <div class="section-value">${data.buyer_name}</div>
       </div>
-      <div class="row">
-        <div><div class="label">합계</div><div class="value" style="color: var(--green); font-size: 18px;">${data.total_price.toLocaleString('ko-KR')}원</div></div>
+
+      <div class="receipt-section">
+        <div class="section-label">상품</div>
+        <div class="section-value">${data.product}</div>
+        <div class="product-detail">${data.price_per_unit.toLocaleString('ko-KR')}원 × ${data.quantity}개</div>
       </div>
+
+      <div class="total-section">
+        <div class="total-label">TOTAL</div>
+        <div class="total-amount">${data.total_price.toLocaleString('ko-KR')}원</div>
+      </div>
+
+      <div class="status-badge">✓ 제조 완료</div>
     `;
   } catch (err) {
-    document.getElementById('detail').innerHTML = `<div class="error">오류: ${err.message}</div>`;
-    document.getElementById('lead').textContent = '';
+    detailEl.innerHTML = `<div class="error">오류: ${err.message}</div>`;
   }
 }
 
