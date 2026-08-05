@@ -16,6 +16,21 @@
   }
 
   /* Radial Gradient Blur Background */
+  @keyframes gentle-shift {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(15px, 10px);
+    }
+    50% {
+      transform: translate(30px, 20px);
+    }
+    75% {
+      transform: translate(15px, 30px);
+    }
+  }
+
   body::before {
     content: '';
     position: fixed;
@@ -24,11 +39,13 @@
     width: 100%;
     height: 100%;
     background:
-      radial-gradient(circle at 15% 20%, rgba(255, 125, 125, 0.06) 0%, transparent 40%),
-      radial-gradient(circle at 85% 85%, rgba(255, 216, 194, 0.06) 0%, transparent 50%),
-      radial-gradient(circle at 90% 10%, rgba(244, 229, 216, 0.04) 0%, transparent 45%);
+      radial-gradient(circle 600px at 15% 20%, rgba(255, 125, 125, 0.055) 0%, transparent 100%),
+      radial-gradient(circle 700px at 85% 85%, rgba(255, 216, 194, 0.055) 0%, transparent 100%),
+      radial-gradient(circle 500px at 90% 10%, rgba(244, 229, 216, 0.04) 0%, transparent 100%),
+      radial-gradient(circle 800px at 50% 50%, rgba(240, 230, 220, 0.025) 0%, transparent 100%);
     pointer-events: none;
     z-index: -1;
+    animation: gentle-shift 25s ease-in-out infinite;
   }
 
   .container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
@@ -361,11 +378,11 @@
   }
 
   tbody tr:first-child {
-    background: #FFF7F7;
+    background: #FFFFFF;
   }
 
   tbody tr:hover {
-    background: #FAFAFA;
+    background: rgba(198, 40, 40, 0.04);
     transform: translateY(-1px);
   }
 
