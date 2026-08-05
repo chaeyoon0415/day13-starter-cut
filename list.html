@@ -15,7 +15,21 @@
     position: relative;
   }
 
-  .container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    padding: 0 16px;
+  }
+
+  /* Focus states for accessibility */
+  input:focus,
+  button:focus,
+  a:focus {
+    outline: 2px solid #C62828;
+    outline-offset: 2px;
+  }
 
   .header {
     display: flex;
@@ -246,6 +260,10 @@
     transition: all 0.2s ease;
   }
 
+  .search-box input:hover {
+    border-color: #D0D0D0;
+  }
+
   .search-box input:focus {
     outline: none;
     border-color: #C62828;
@@ -280,6 +298,10 @@
     min-width: 160px;
     height: 56px;
     transition: all 0.2s ease;
+  }
+
+  .date-filter input:hover {
+    border-color: #D0D0D0;
   }
 
   .date-filter input:focus {

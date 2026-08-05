@@ -28,10 +28,16 @@
   }
 
   .container {
-    max-width: 400px;
+    max-width: 480px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
+  }
+
+  /* Focus states for accessibility */
+  a:focus {
+    outline: 2px solid #C62828;
+    outline-offset: 2px;
   }
 
   .back {
@@ -44,10 +50,17 @@
     font-size: 14px;
     font-weight: 600;
     transition: all 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 4px;
   }
   .back:hover {
     transform: translateX(4px);
     color: #B71C1C;
+    background: rgba(198, 40, 40, 0.05);
+  }
+  .back:focus {
+    outline: 2px solid #C62828;
+    outline-offset: 2px;
   }
 
   .detail-container {

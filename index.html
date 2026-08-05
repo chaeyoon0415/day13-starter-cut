@@ -21,14 +21,84 @@
   p.lead { color: var(--muted); font-size: 14px; margin: 0 0 18px; }
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
   label { display: block; margin: 14px 0 4px; font-weight: 700; font-size: 14px; }
-  input, select { width: 100%; padding: 10px 12px; border: 1px solid #bfc9bf; border-radius: 8px; font-size: 15px; background: #fff; color: var(--ink); font-family: inherit; }
-  input:focus, select:focus { outline: 3px solid var(--green-soft); border-color: var(--green); }
-  button { margin-top: 18px; width: 100%; padding: 12px 22px; background: var(--orange); color: #fff; border: 0; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; }
-  button:disabled { opacity: .55; cursor: wait; }
-  .msg { margin-top: 14px; font-size: 14px; display: none; padding: 10px 12px; border-radius: 8px; }
-  .msg.ok { display: block; background: var(--green-soft); color: var(--green); }
-  .msg.err { display: block; background: #fbeae2; color: #b23c1a; }
-  a { color: var(--green); }
+  input, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #bfc9bf;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #fff;
+    color: var(--ink);
+    font-family: inherit;
+    transition: all 0.2s ease;
+  }
+  input:hover, select:hover {
+    border-color: var(--green);
+  }
+  input:focus, select:focus {
+    outline: 2px solid var(--green);
+    outline-offset: 0;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--green-soft);
+  }
+  button {
+    margin-top: 18px;
+    width: 100%;
+    padding: 12px 22px;
+    background: var(--orange);
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  button:hover {
+    background: #c86a26;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  button:focus {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+  }
+  button:disabled {
+    opacity: 0.55;
+    cursor: wait;
+    transform: none;
+    box-shadow: none;
+  }
+  .msg {
+    margin-top: 14px;
+    font-size: 14px;
+    display: none;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+  .msg.ok {
+    display: block;
+    background: var(--green-soft);
+    color: var(--green);
+  }
+  .msg.err {
+    display: block;
+    background: #fbeae2;
+    color: #b23c1a;
+  }
+  a {
+    color: var(--green);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  a:focus {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
 </style>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments) };
