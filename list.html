@@ -609,10 +609,6 @@ let filteredRows = [];
 let currentSort = 'desc';
 
 function getStatus(id) {
-  const mod = id % 5;
-  if (mod === 0) return 'cancel';
-  if (mod === 1) return 'pending';
-  if (mod === 2) return 'process';
   return 'complete';
 }
 
@@ -695,18 +691,8 @@ function render() {
       hour12: true
     });
 
-    let badgeClass = 'badge-success';
-    let statusText = '완료';
-    if (r.status === 'cancel') {
-      badgeClass = 'badge-cancel';
-      statusText = '취소';
-    } else if (r.status === 'pending') {
-      badgeClass = 'badge-pending';
-      statusText = '대기';
-    } else if (r.status === 'process') {
-      badgeClass = 'badge-process';
-      statusText = '제조중';
-    }
+    const badgeClass = r.status === 'complete' ? 'badge-success' : 'badge-cancel';
+    const statusText = r.status === 'complete' ? '완료' : '취소';
 
     return `<tr onclick="location.href='detail.html?id=${r.id}'">
       <td>#${r.id}</td>
