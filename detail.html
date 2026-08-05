@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>주문 상세</title>
+<style>
+  :root {
+    --ink: #183027;
+    --muted: #64736c;
+    --paper: #f7f5ed;
+    --panel: #fffdf6;
+    --line: #d7dbcf;
+    --green: #257357;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: "Apple SD Gothic Neo", Pretendard, sans-serif; color: var(--ink); background: var(--paper); max-width: 480px; margin: 40px auto; padding: 0 16px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  p.lead { color: var(--muted); font-size: 14px; margin: 0 0 18px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+  .row { display: flex; justify-content: space-between; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .row:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+  .label { font-weight: 700; font-size: 14px; color: var(--muted); }
+  .value { font-size: 16px; font-weight: 600; }
+  .back { display: inline-block; margin-bottom: 16px; color: var(--green); text-decoration: none; font-size: 14px; }
+  .back:hover { text-decoration: underline; }
+  .error { color: #b23c1a; padding: 12px; background: #fbeae2; border-radius: 8px; }
+  .loading { color: var(--muted); }
+</style>
+</head>
+<body>
+  <a class="back" href="list.html">← 판매 현황으로</a>
+  <h1>주문 상세</h1>
+  <p class="lead" id="lead">주문 정보를 불러오는 중...</p>
+  <div class="card" id="detail"></div>
+
+<script>
+async function load() {
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+
+  if (!id) {
+    document.getElementById('detail').innerHTML = '<div class="error">주문 번호가 없습니다</div>';
+    document.getElementById('lead').textContent = '';
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/list?id=${id}`);
+    if (!res.ok) {
+      document.getElementById('detail').innerHTML = '<div class="error">주문을 찾을 수 없습니다</div>';
+      document.getElementById('lead').textContent = '';
+      return;
+    }
+    const data = await res.json();
+
+    const date = new Date(data.purchased_at).toLocaleString('ko-KR');
+    document.getElementById('lead').textContent = `#${data.id} · ${date}`;
+
+    document.getElementById('detail').innerHTML = `
+      <div class="row">
+        <div><div class="label">구매자</div><div class="value">${data.buyer_name}</div></div>
+        <div><div class="label">상품</div><div class="value">${data.product}</div></div>
+      </div>
+      <div class="row">
+        <div><div class="label">수량</div><div class="value">${data.quantity}개</div></div>
+        <div><div class="label">단가</div><div class="value">${data.price_per_unit.toLocaleString('ko-KR')}원</div></div>
+      </div>
+      <div class="row">
+        <div><div class="label">합계</div><div class="value" style="color: var(--green); font-size: 18px;">${data.total_price.toLocaleString('ko-KR')}원</div></div>
+      </div>
+    `;
+  } catch (err) {
+    document.getElementById('detail').innerHTML = `<div class="error">오류: ${err.message}</div>`;
+    document.getElementById('lead').textContent = '';
+  }
+}
+
+load();
+</script>
+</body>
+</html>

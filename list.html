@@ -34,7 +34,7 @@ async function load() {
   document.getElementById('count').textContent = '총 ' + rows.length + '건';
   document.getElementById('rows').innerHTML = rows.map(r =>
     `<tr>
-       <td>${r.id}</td>
+       <td><a href="detail.html?id=${r.id}">${r.id}</a></td>
        <td>${r.buyer_name}</td>
        <td>${r.product}</td>
        <td class="num">${r.quantity}</td>
